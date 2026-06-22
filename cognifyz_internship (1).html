@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web Developer Internship | Cognifyz Technologies</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,300;9..144,700;9..144,900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fffaf5;
+    --surface: #fff4ea;
+    --surface2: #ffecd8;
+    --orange: #f25c1e;
+    --orange-light: #ff8c5a;
+    --gold: #e8a020;
+    --red: #c93030;
+    --text: #1a0e05;
+    --muted: #7a5c45;
+    --border: rgba(242,92,30,0.14);
+    --border-solid: #f5d4bc;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 5%;
+    background: rgba(255,250,245,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-solid);
+  }
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 1.35rem;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  .logo span { color: var(--orange); }
+  .nav-cta {
+    background: var(--orange);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0.6rem 1.5rem;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .nav-cta:hover { background: var(--red); transform: scale(1.03); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 9rem 5% 5rem;
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  /* Decorative blobs */
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .blob-1 {
+    width: 560px; height: 420px;
+    background: rgba(242,92,30,0.13);
+    top: -80px; right: -100px;
+  }
+  .blob-2 {
+    width: 380px; height: 340px;
+    background: rgba(232,160,32,0.12);
+    bottom: 40px; left: -80px;
+  }
+  .blob-3 {
+    width: 250px; height: 250px;
+    background: rgba(201,48,48,0.08);
+    top: 40%; left: 55%;
+  }
+
+  /* Polka-dot texture */
+  .hero-dots {
+    position: absolute; inset: 0; z-index: 0;
+    background-image: radial-gradient(circle, rgba(242,92,30,0.12) 1.5px, transparent 1.5px);
+    background-size: 28px 28px;
+    mask-image: radial-gradient(ellipse 70% 80% at 80% 40%, black 0%, transparent 80%);
+  }
+
+  .hero-inner { position: relative; z-index: 1; max-width: 820px; }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: #fff3ea;
+    border: 1.5px solid #f5c8a0;
+    border-radius: 100px;
+    padding: 0.4rem 1.1rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 1.6rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.1s ease forwards;
+  }
+  .badge-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--orange);
+    animation: pulse 1.8s infinite;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(2.6rem, 6vw, 4.6rem);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 1.4rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.25s ease forwards;
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--orange);
+  }
+
+  .hero-sub {
+    font-size: 1.08rem;
+    color: var(--muted);
+    max-width: 540px;
+    margin-bottom: 2.2rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.4s ease forwards;
+    line-height: 1.8;
+  }
+
+  .hero-meta {
+    display: flex; gap: 1.6rem; flex-wrap: wrap;
+    margin-bottom: 2.6rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.5s ease forwards;
+  }
+  .meta-pill {
+    display: flex; align-items: center; gap: 0.45rem;
+    background: #fff3e8;
+    border: 1px solid #f5cca8;
+    border-radius: 100px;
+    padding: 0.35rem 1rem;
+    font-size: 0.83rem;
+    font-weight: 600;
+    color: #a04010;
+  }
+
+  .hero-actions {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.6s ease forwards;
+  }
+
+  .btn-primary {
+    background: var(--orange);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.98rem;
+    padding: 0.9rem 2.4rem;
+    border-radius: 100px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s, transform 0.2s;
+    letter-spacing: 0.01em;
+  }
+  .btn-primary:hover { background: var(--red); transform: translateY(-2px); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    font-weight: 700;
+    font-size: 0.98rem;
+    padding: 0.9rem 2.4rem;
+    border: 2px solid var(--border-solid);
+    border-radius: 100px;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--orange); background: #fff3ea; }
+
+  /* ── SECTIONS ── */
+  section { padding: 5.5rem 5%; }
+
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 0.7rem;
+  }
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(1.9rem, 3.5vw, 2.9rem);
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+  .section-sub {
+    color: var(--muted);
+    font-size: 0.98rem;
+    max-width: 520px;
+    margin-bottom: 3rem;
+  }
+
+  /* ── OVERVIEW ── */
+  .overview {
+    background: var(--surface);
+    border-top: 1px solid var(--border-solid);
+    border-bottom: 1px solid var(--border-solid);
+  }
+  .overview-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: center;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .overview-stat-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  }
+  .stat-card {
+    background: #fff;
+    border: 1.5px solid var(--border-solid);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+  .stat-card:hover { border-color: var(--orange); transform: translateY(-3px); }
+  .stat-number {
+    font-family: 'Fraunces', serif;
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: var(--orange);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+  .stat-label { font-size: 0.82rem; color: var(--muted); font-weight: 500; }
+
+  /* ── HIGHLIGHTS ── */
+  .highlights { background: var(--bg); }
+  .highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.4rem;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .highlight-card {
+    background: #fff;
+    border: 1.5px solid var(--border-solid);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+  }
+  .highlight-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--orange);
+    box-shadow: 0 12px 36px rgba(242,92,30,0.12);
+  }
+  /* Color-coded top stripe per card */
+  .highlight-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
+    background: var(--card-accent, var(--orange));
+    border-radius: 0 0 20px 20px;
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .highlight-card:hover::after { opacity: 1; }
+  .card-icon {
+    width: 52px; height: 52px;
+    background: var(--surface2);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.2rem;
+  }
+  .card-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 1.08rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .card-body { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+
+  /* ── QUALIFICATIONS ── */
+  .qualifications {
+    background: var(--surface);
+    border-top: 1px solid var(--border-solid);
+    border-bottom: 1px solid var(--border-solid);
+  }
+  .quals-layout {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; max-width: 1100px; margin: 0 auto; align-items: start;
+  }
+  .qual-list { list-style: none; display: flex; flex-direction: column; gap: 0.85rem; }
+  .qual-list li {
+    display: flex; align-items: flex-start; gap: 0.8rem;
+    font-size: 0.93rem; color: var(--muted);
+    background: #fff;
+    border: 1px solid var(--border-solid);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+  }
+  .qual-list li::before {
+    content: '✦';
+    color: var(--orange);
+    font-size: 0.7rem;
+    flex-shrink: 0;
+    margin-top: 0.3rem;
+  }
+  .tech-tags { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 1rem; }
+  .tag {
+    background: #fff3e8;
+    border: 1.5px solid #f5c8a0;
+    color: #a04010;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.3rem 0.85rem;
+    border-radius: 100px;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── CTA BANNER ── */
+  .cta-banner {
+    background: var(--orange);
+    text-align: center;
+    padding: 5.5rem 5%;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-banner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.12) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+  }
+  .cta-inner { position: relative; z-index: 1; }
+  .cta-inner .section-label { color: rgba(255,255,255,0.75); }
+  .cta-inner h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 4.5vw, 3.4rem);
+    letter-spacing: -0.03em;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+  .cta-inner p { color: rgba(255,255,255,0.8); margin-bottom: 2.5rem; max-width: 460px; margin-left: auto; margin-right: auto; }
+  .btn-white {
+    background: #fff;
+    color: var(--orange);
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 0.9rem 2.4rem;
+    border-radius: 100px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s, transform 0.2s;
+    letter-spacing: 0.01em;
+  }
+  .btn-white:hover { background: var(--surface2); transform: translateY(-2px); }
+  .btn-outline-white {
+    background: transparent;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.9rem 2.4rem;
+    border: 2px solid rgba(255,255,255,0.45);
+    border-radius: 100px;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-outline-white:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--text);
+    padding: 3.5rem 5% 2rem;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 3rem; max-width: 1100px; margin: 0 auto 2.5rem;
+  }
+  .footer-logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 1.3rem;
+    color: #fff;
+    text-decoration: none;
+  }
+  .footer-logo span { color: var(--orange-light); }
+  .footer-brand p { color: rgba(255,255,255,0.45); font-size: 0.88rem; margin-top: 0.8rem; max-width: 260px; line-height: 1.7; }
+  .footer-col-title {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 1.1rem;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+  .footer-links a {
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--orange-light); }
+  .social-row { display: flex; gap: 0.6rem; margin-top: 1.2rem; }
+  .social-btn {
+    width: 38px; height: 38px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 0.88rem; font-weight: 700;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .social-btn:hover { border-color: var(--orange-light); color: var(--orange-light); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 1.5rem;
+    max-width: 1100px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.3);
+  }
+  .footer-bottom a { color: var(--orange-light); text-decoration: none; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%       { transform: scale(1.5); opacity: 0.55; }
+  }
+  .reveal {
+    opacity: 0; transform: translateY(22px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    .overview-grid, .quals-layout, .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="logo">Cogni<span>fyz</span></a>
+  <a href="#apply" class="nav-cta">Apply Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="hero-dots"></div>
+  <div class="hero-inner">
+    <div class="badge"><span class="badge-dot"></span>Now Accepting Applications — 2025</div>
+    <h1>Web Developer<br>Internship at<br><em>Cognifyz Technologies</em></h1>
+    <p class="hero-sub">
+      Join a forward-thinking tech team and build real-world skills. Our hands-on program bridges the gap between learning and industry — with mentorship from senior engineers every step of the way.
+    </p>
+    <div class="hero-meta">
+      <span class="meta-pill">📅 1–3 Month Program</span>
+      <span class="meta-pill">💻 Remote &amp; Hybrid</span>
+      <span class="meta-pill">🌍 Open to All Students</span>
+    </div>
+    <div class="hero-actions">
+      <a href="#apply" class="btn-primary">Apply Now →</a>
+      <a href="#highlights" class="btn-ghost">Learn More</a>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="overview" id="overview">
+  <div class="overview-grid">
+    <div class="reveal">
+      <div class="section-label">Program Overview</div>
+      <h2 class="section-title">Learn by building.<br>Grow with guidance.</h2>
+      <p style="color:var(--muted);font-size:0.96rem;line-height:1.85;margin-bottom:1rem;">
+        The Cognifyz Web Developer Internship is a structured, project-based program for aspiring developers. Over 1 to 3 months, interns work alongside experienced engineers on live products and contribute to meaningful codebases.
+      </p>
+      <p style="color:var(--muted);font-size:0.96rem;line-height:1.85;">
+        Whether you're a student or recent graduate, this is your launchpad into the professional tech world — with weekly check-ins, code reviews, and a dedicated mentor.
+      </p>
+    </div>
+    <div class="overview-stat-grid reveal">
+      <div class="stat-card">
+        <div class="stat-number">1–3</div>
+        <div class="stat-label">Month duration</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Project-based learning</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">1:1</div>
+        <div class="stat-label">Dedicated mentorship</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">✦</div>
+        <div class="stat-label">Certificate awarded</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HIGHLIGHTS -->
+<section class="highlights" id="highlights">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="reveal">
+      <div class="section-label">Why Join Us</div>
+      <h2 class="section-title">What you'll gain</h2>
+      <p class="section-sub">More than just an internship — a career accelerator built for the modern developer.</p>
+    </div>
+    <div class="highlights-grid">
+      <div class="highlight-card reveal" style="--card-accent:#f25c1e;">
+        <div class="card-icon">🛠️</div>
+        <div class="card-title">Real-World Experience</div>
+        <div class="card-body">Work on actual production features and live projects — not dummy exercises. Your contributions ship to real users.</div>
+      </div>
+      <div class="highlight-card reveal" style="--card-accent:#e8a020;">
+        <div class="card-icon">🧑‍🏫</div>
+        <div class="card-title">1-on-1 Mentorship</div>
+        <div class="card-body">Get paired with a senior developer who reviews your code, answers questions, and helps you level up your craft.</div>
+      </div>
+      <div class="highlight-card reveal" style="--card-accent:#c93030;">
+        <div class="card-icon">📄</div>
+        <div class="card-title">Completion Certificate</div>
+        <div class="card-body">Earn an official internship certificate upon completion, recognized by hiring teams across the industry.</div>
+      </div>
+      <div class="highlight-card reveal" style="--card-accent:#f25c1e;">
+        <div class="card-icon">🤝</div>
+        <div class="card-title">Industry Network</div>
+        <div class="card-body">Connect with professionals, alumni, and peers. Our community extends well beyond the program duration.</div>
+      </div>
+      <div class="highlight-card reveal" style="--card-accent:#e8a020;">
+        <div class="card-icon">🚀</div>
+        <div class="card-title">Portfolio Building</div>
+        <div class="card-body">Leave with projects you can showcase. We help you document your work into a compelling portfolio piece.</div>
+      </div>
+      <div class="highlight-card reveal" style="--card-accent:#c93030;">
+        <div class="card-icon">🔁</div>
+        <div class="card-title">Agile Workflow</div>
+        <div class="card-body">Experience sprints, standups, and pull requests in a real engineering team. Learn the tools professionals use daily.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUALIFICATIONS -->
+<section class="qualifications" id="qualifications">
+  <div class="quals-layout">
+    <div class="reveal">
+      <div class="section-label">Who We're Looking For</div>
+      <h2 class="section-title">Desired Skills &amp; Qualifications</h2>
+      <p style="color:var(--muted);font-size:0.93rem;margin-bottom:1.4rem;">You don't need to be an expert — just curious, driven, and ready to learn.</p>
+      <ul class="qual-list">
+        <li>Currently pursuing or recently completed a degree in Computer Science, Engineering, or related field</li>
+        <li>Basic understanding of HTML, CSS, and JavaScript fundamentals</li>
+        <li>Familiarity with version control tools like Git and GitHub</li>
+        <li>A proactive attitude and ability to work independently</li>
+        <li>Strong communication skills and willingness to receive feedback</li>
+        <li>A portfolio or personal projects are a plus, but not required</li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <div class="section-label">Tech Stack</div>
+      <h3 style="font-family:'Fraunces',serif;font-weight:700;font-size:1.2rem;margin-bottom:0.5rem;color:var(--text);">Technologies You'll Work With</h3>
+      <p style="color:var(--muted);font-size:0.88rem;margin-bottom:0.6rem;">Exposure to some of these is all we ask. You'll master the rest on the job.</p>
+      <div class="tech-tags">
+        <span class="tag">HTML5</span>
+        <span class="tag">CSS3</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">React.js</span>
+        <span class="tag">Node.js</span>
+        <span class="tag">REST APIs</span>
+        <span class="tag">Git / GitHub</span>
+        <span class="tag">Tailwind CSS</span>
+        <span class="tag">SQL / MongoDB</span>
+        <span class="tag">Figma / UI Design</span>
+        <span class="tag">VS Code</span>
+        <span class="tag">Agile / Scrum</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner" id="apply">
+  <div class="cta-inner">
+    <div class="section-label">Ready to Begin?</div>
+    <h2>Start your developer journey<br>with Cognifyz.</h2>
+    <p>Applications are open. Spots are limited. Don't wait — take the first step toward a career you'll be proud of.</p>
+    <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <a href="mailto:contact@cognifyz.com?subject=Web Developer Internship Application" class="btn-white">Apply Now →</a>
+      <a href="https://www.cognifyz.com" target="_blank" class="btn-outline-white">Visit Website</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="footer-logo">Cogni<span>fyz</span> Technologies</a>
+      <p>Empowering the next generation of developers through immersive, project-based internships.</p>
+      <div class="social-row">
+        <a href="https://www.linkedin.com/company/cognifyz-techonologies/" target="_blank" class="social-btn" title="LinkedIn">in</a>
+        <a href="https://www.instagram.com/cognifyz_tech" target="_blank" class="social-btn" title="Instagram">IG</a>
+        <a href="https://twitter.com/cognifyz" target="_blank" class="social-btn" title="Twitter">𝕏</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Quick Links</div>
+      <ul class="footer-links">
+        <li><a href="#overview">Program Overview</a></li>
+        <li><a href="#highlights">Benefits</a></li>
+        <li><a href="#qualifications">Qualifications</a></li>
+        <li><a href="#apply">Apply Now</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Contact Us</div>
+      <ul class="footer-links">
+        <li><a href="mailto:contact@cognifyz.com">✉ contact@cognifyz.com</a></li>
+        <li><a href="https://www.cognifyz.com" target="_blank">🌐 www.cognifyz.com</a></li>
+        <li><a href="https://www.linkedin.com/company/cognifyz-techonologies/" target="_blank">💼 LinkedIn — Cognifyz Technologies</a></li>
+        <li><a href="https://www.instagram.com/cognifyz_tech" target="_blank">📸 @cognifyz_tech</a></li>
+        <li><a href="https://twitter.com/cognifyz" target="_blank">🐦 @cognifyz-Technologies</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Cognifyz Technologies. All rights reserved.</span>
+    <span>Contact us at <a href="mailto:contact@cognifyz.com">contact@cognifyz.com</a></span>
+  </div>
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 90);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
